@@ -202,7 +202,8 @@
     document.getElementById(`gpaInput${id}`).style.display = type === "gpa" ? "block" : "none";
   }
 
-  function gpaToScore(gpa) {
+  // แปลง GPA เป็นเปอร์เซ็นต์ขั้นต่ำ
+  function gpaToMinPercent(gpa) {
     const found = gradeScale.find(g => g.grade === gpa);
     return found ? found.min : null;
   }
@@ -217,8 +218,8 @@
       return;
     }
 
-    const targetScore = gpaToScore(targetGPA);
-    if (targetScore === null) {
+    const targetPercent = gpaToMinPercent(targetGPA);
+    if (targetPercent === null) {
       alert("กรุณากรอกเกรดเป้าหมายในช่วง 0 - 4 เท่านั้น");
       return;
     }
@@ -237,32 +238,37 @@
       }
 
       const inputType = document.getElementById(`inputType${i}`).value;
-      let midScore = 0;
+      let midScorePercent = 0;
 
       if (inputType === "score") {
-        midScore = parseFloat(document.getElementById(`midScore${i}`).value);
+        const midScore = parseFloat(document.getElementById(`midScore${i}`).value);
+        if (isNaN(midScore)) {
+          resultHTML += `<p>❌ คะแนนระหว่างภาคไม่ถูกต้องใน "${name}"</p>`;
+          continue;
+        }
+        midScorePercent = (midScore / midFull) * 100;
       } else {
         const midGPA = parseFloat(document.getElementById(`midGPA${i}`).value);
-        midScore = gpaToScore(midGPA) * (midFull / 100);
+        if (isNaN(midGPA)) {
+          resultHTML += `<p>❌ GPA ระหว่างภาคไม่ถูกต้องใน "${name}"</p>`;
+          continue;
+        }
+        midScorePercent = gpaToMinPercent(midGPA);
       }
 
-      if (isNaN(midScore)) {
-        resultHTML += `<p>❌ คะแนนระหว่างภาคไม่ถูกต้องใน "${name}"</p>`;
-        continue;
-      }
+      // คำนวณว่าต้องการเปอร์เซ็นต์รวมเท่าไหร่
+      const requiredFinalPercent = targetPercent - midScorePercent;
+      const requiredFinalScore = (requiredFinalPercent / 100) * finalFull;
 
-      const requiredFinal = targetScore - midScore;
-
-      if (requiredFinal > finalFull) {
-        const fallback = gradeScale.slice().reverse().find(g => (g.min - midScore) <= finalFull) || gradeScale[gradeScale.length -1];
-        const fallbackScore = fallback.min - midScore;
-
+      if (requiredFinalScore > finalFull) {
+        // หาเกรดที่เป็นไปได้สูงสุดแทน
+        const maxTotalPercent = midScorePercent + 100;
+        const fallback = gradeScale.findLast(g => g.min <= maxTotalPercent);
         resultHTML += `
           <div class="box warning">
             <p><strong>${name}</strong> (${credit} หน่วยกิต)</p>
-            <p>⚠️ เกรด <strong>${targetGPA.toFixed(1)}</strong> อาจจะยังน้า 😢</p>
-            <p>👉 คุณอาจได้เกรด <strong>${fallback.grade.toFixed(1)}</strong> ถ้าทำปลายภาคให้ได้อย่างน้อย 
-            <strong>${fallbackScore.toFixed(2)}</strong> / ${finalFull} คะแนน</p>
+            <p>⚠️ เกรด <strong>${targetGPA.toFixed(1)}</strong> อาจจะยังไม่ถึง 😢</p>
+            <p>👉 คุณอาจได้เกรด <strong>${fallback.grade.toFixed(1)}</strong></p>
           </div>
         `;
         totalGradePoints += fallback.grade * credit;
@@ -271,7 +277,7 @@
           <div class="box success">
             <p><strong>${name}</strong> (${credit} หน่วยกิต)</p>
             <p>✅ เกรด <strong>${targetGPA.toFixed(1)}</strong> มาแน่! 🎉</p>
-            <p>👉 คุณต้องทำปลายภาคอย่างน้อย <strong>${requiredFinal.toFixed(2)}</strong> / ${finalFull} คะแนน</p>
+            <p>👉 คุณต้องทำปลายภาคอย่างน้อย <strong>${requiredFinalScore.toFixed(2)}</strong> / ${finalFull} คะแนน</p>
           </div>
         `;
         totalGradePoints += targetGPA * credit;
