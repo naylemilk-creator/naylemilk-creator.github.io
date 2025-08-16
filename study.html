@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>แผนการเรียนรายสัปดาห์</title>
+
+  <!-- Google Font Prompt -->
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background-color: #f4f4f4;
+      color: #2c3e50;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    h1 {
+      text-align: center;
+      color: #003366;
+      font-weight: 600;
+      font-size: 28px;
+      margin-bottom: 25px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      font-size: 16px;
+      font-weight: 500;
+      color: #34495e;
+      display: block;
+      margin-bottom: 8px;
+    }
+    select, button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #0056b3;
+      background-color: #ecf2f8;
+      color: #2c3e50;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+    select:hover, select:focus {
+      background-color: #d7e3f4;
+      border-color: #004494;
+      outline: none;
+    }
+    button {
+      background-color: #0056b3;
+      color: #fff;
+      border: none;
+      font-weight: 500;
+      margin-top: 10px;
+      box-shadow: 0 3px 10px rgba(0, 86, 179, 0.4);
+    }
+    button:hover {
+      background-color: #004494;
+      box-shadow: 0 5px 15px rgba(0, 86, 179, 0.6);
+    }
+    #schedule-output {
+      margin-top: 30px;
+    }
+    h2 {
+      color: #003366;
+      font-weight: 500;
+      margin-bottom: 10px;
+      border-bottom: 3px solid #0056b3;
+      padding-bottom: 6px;
+      font-size: 22px;
+    }
+    p.description {
+      font-size: 16px;
+      color: #34495e;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 15px;
+      color: #2c3e50;
+    }
+    th, td {
+      border: 1px solid #d1d9e6;
+      padding: 12px 15px;
+      text-align: left;
+    }
+    th {
+      background-color: #e9eff7;
+      color: #0056b3;
+      font-weight: 500;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #f2f6fb;
+    }
+    .note {
+      margin-top: 15px;
+      font-style: italic;
+      color: #34495e;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    /* TCAS Section */
+    .tcas-section {
+      margin-top: 40px;
+      padding: 20px;
+      background-color: #e8f0fa;
+      border-left: 6px solid #0056b3;
+      border-radius: 8px;
+    }
+    .tcas-section ul {
+      padding-left: 20px;
+      margin: 15px 0;
+    }
+    .tcas-section li {
+      margin-bottom: 8px;
+      font-size: 15px;
+      color: #2c3e50;
+    }
+    .tcas-section a {
+      display: inline-block;
+      margin-top: 10px;
+      background-color: #006699;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+    .tcas-section a:hover {
+      background-color: #004c80;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>มาวางแผนการเรียนรายสัปดาห์กันเถอะ !</h1>
+
+    <div class="form-group">
+      <label for="grade-level">เลือกระดับชั้น</label>
+      <select id="grade-level">
+        <option value="" disabled selected>-- เลือกระดับชั้น --</option>
+        <option value="m4">ม.4</option>
+        <option value="m5">ม.5</option>
+        <option value="m6">ม.6</option>
+      </select>
+    </div>
+
+    <button onclick="displaySchedule()">แสดงแผนการเรียน</button>
+
+    <div id="schedule-output"></div>
+  </div>
+
+  <script>
+    function displaySchedule() {
+      const grade = document.getElementById('grade-level').value;
+      const outputDiv = document.getElementById('schedule-output');
+      let scheduleHTML = '';
+
+      if (grade === 'm4') {
+        scheduleHTML = `
+          <h2>แผนการเรียนสำหรับ ม.4</h2>
+          <p class="description">เน้นการสร้างพื้นฐานให้แน่นในวิชาหลัก</p>
+          <table>
+            <thead>
+              <tr>
+                <th>วัน</th>
+                <th>เวลา</th>
+                <th>วิชา</th>
+                <th>เนื้อหาที่ควรเน้น</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>จันทร์</td><td>16:00 - 17:30</td><td>คณิตศาสตร์พื้นฐาน</td><td>เซต, ตรรกศาสตร์</td></tr>
+              <tr><td>อังคาร</td><td>16:00 - 17:30</td><td>อังกฤษ</td><td>Grammar, Tenses, Noun Clauses</td></tr>
+              <tr><td>พุธ</td><td>16:00 - 17:30</td><td>ฟิสิกส์</td><td>การเคลื่อนที่แนวตรง</td></tr>
+              <tr><td>พฤหัส</td><td>16:00 - 17:30</td><td>เคมี</td><td>โครงสร้างอะตอม, ตารางธาตุ</td></tr>
+              <tr><td>ศุกร์</td><td>16:00 - 17:30</td><td>ชีววิทยา</td><td>เซลล์, เคมีของชีวิต</td></tr>
+              <tr><td>เสาร์</td><td>10:00 - 12:00</td><td>คณิตเพิ่มเติม</td><td>ระบบจำนวนจริง, ฟังก์ชัน</td></tr>
+              <tr><td></td><td>13:30 - 15:30</td><td>สรุป & ทบทวน</td><td>Mind Map, แบบฝึกหัด</td></tr>
+              <tr><td>อาทิตย์</td><td>10:00 - 11:30</td><td>สังคม</td><td>หน้าที่พลเมือง, เศรษฐศาสตร์</td></tr>
+              <tr><td></td><td>11:30 - 13:00</td><td>ไทย</td><td>วรรณคดี, เขียนเรียงความ</td></tr>
+            </tbody>
+          </table>
+          <p class="note">คำแนะนำ: ปรับตารางให้เหมาะกับเวลาและสุขภาพของคุณ</p>
+        `;
+      } else if (grade === 'm5') {
+        scheduleHTML = `
+          <h2>แผนการเรียนสำหรับ ม.5</h2>
+          <p class="description">เน้นเนื้อหาที่เข้มข้นขึ้น และเชื่อมโยงความรู้</p>
+          <table>
+            <thead>
+              <tr>
+                <th>วัน</th>
+                <th>เวลา</th>
+                <th>วิชา</th>
+                <th>เนื้อหาที่ควรเน้น</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>จันทร์</td><td>16:00 - 18:00</td><td>คณิตศาสตร์</td><td>แคลคูลัส, ฟังก์ชัน</td></tr>
+              <tr><td>อังคาร</td><td>16:00 - 18:00</td><td>อังกฤษ</td><td>Reading, Writing</td></tr>
+              <tr><td>พุธ</td><td>16:00 - 18:00</td><td>ฟิสิกส์</td><td>แรง, การเคลื่อนที่ 2 มิติ</td></tr>
+              <tr><td>พฤหัส</td><td>16:00 - 18:00</td><td>เคมี</td><td>พันธะเคมี</td></tr>
+              <tr><td>ศุกร์</td><td>16:00 - 18:00</td><td>ชีววิทยา</td><td>ระบบในร่างกาย</td></tr>
+              <tr><td>เสาร์</td><td>10:00 - 12:00</td><td>คณิตเพิ่มเติม</td><td>ตรรกศาสตร์, เวกเตอร์</td></tr>
+              <tr><td></td><td>13:00 - 15:00</td><td>ข้อสอบเก่า</td><td>ฝึกทำข้อสอบจริง</td></tr>
+              <tr><td>อาทิตย์</td><td>10:00 - 11:30</td><td>สังคม</td><td>ประวัติศาสตร์, หน้าที่พลเมือง</td></tr>
+            </tbody>
+          </table>
+          <p class="note">อย่าลืมแบ่งเวลาออกกำลังกาย และพักผ่อนให้เพียงพอ</p>
+        `;
+      } else if (grade === 'm6') {
+        scheduleHTML = `
+          <h2>แผนการเรียนสำหรับ ม.6</h2>
+          <p class="description">เน้นการเตรียมสอบและจัดการเวลาให้เหมาะสม</p>
+          <table>
+            <thead>
+              <tr>
+                <th>วัน</th>
+                <th>เวลา</th>
+                <th>วิชา</th>
+                <th>เนื้อหาที่ควรเน้น</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>จันทร์</td><td>16:00 - 18:30</td><td>คณิตศาสตร์</td><td>แคลคูลัส, สถิติ</td></tr>
+              <tr><td>อังคาร</td><td>16:00 - 18:30</td><td>อังกฤษ</td><td>TOEFL/IELTS, Writing</td></tr>
+              <tr><td>พุธ</td><td>16:00 - 18:30</td><td>ฟิสิกส์</td><td>กลศาสตร์, ไฟฟ้า</td></tr>
+              <tr><td>พฤหัส</td><td>16:00 - 18:30</td><td>เคมี</td><td>เคมีอินทรีย์, สมดุลเคมี</td></tr>
+              <tr><td>ศุกร์</td><td>16:00 - 18:30</td><td>ชีววิทยา</td><td>พันธุศาสตร์, นิเวศ</td></tr>
+              <tr><td>เสาร์</td><td>09:00 - 11:30</td><td>ข้อสอบเก่า</td><td>PAT, O-NET</td></tr>
+              <tr><td></td><td>13:00 - 15:00</td><td>สรุปเนื้อหา</td><td>เทคนิคทำข้อสอบ</td></tr>
+              <tr><td>อาทิตย์</td><td>09:00 - 11:00</td><td>สังคม</td><td>ฝึกวิเคราะห์ข้อสอบ</td></tr>
+            </tbody>
+          </table>
+          <p class="note">คำแนะนำ: วางแผนเวลาส่วนตัวให้ดีและพักผ่อนให้เพียงพอ</p>
+
+          <div class="tcas-section">
+            <h3>🔎 วางแผนต่อกับระบบ TCAS</h3>
+            <p>เมื่อนักเรียน ม.6 วางแผนการเรียนแล้ว อย่าลืมเตรียมตัวสำหรับระบบ TCAS ด้วย!</p>
+            <ul>
+              <li>ศึกษาขั้นตอน TCAS 1-4</li>
+              <li>ดูคุณสมบัติของคณะ/สาขาที่สนใจ</li>
+              <li>ตรวจสอบปฏิทิน TCAS และคะแนนที่ต้องใช้</li>
+            </ul>
+            <a href="https://www.mytcas.com" target="_blank">ดูรายละเอียดระบบ TCAS</a>
+          </div>
+        `;
+      } else {
+        scheduleHTML = `<p style="text-align:center; color:#c0392b;">โปรดเลือกระดับชั้นก่อน</p>`;
+      }
+
+      outputDiv.innerHTML = scheduleHTML;
+    }
+  </script>
+
+</body>
+</html>

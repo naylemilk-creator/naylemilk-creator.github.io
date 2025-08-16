@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>คำนวณ GPAX เพื่อเข้าคณะในฝัน</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    h2 {
+      text-align: center;
+      color: #003366;
+      margin-bottom: 25px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+      color: #333;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: 'Prompt', sans-serif;
+    }
+    button {
+      background-color: #0056b3;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #004494;
+    }
+    .result {
+      margin-top: 25px;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .success {
+      background-color: #e6f4ea;
+      color: #235d3a;
+      border: 1px solid #b5e0c3;
+    }
+    .fail {
+      background-color: #fcebea;
+      color: #8a1f16;
+      border: 1px solid #f5c2c0;
+    }
+    select:invalid {
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>คำนวณเกรดเฉลี่ยสะสม (GPAX)</h2>
+
+    <label for="faculty">เลือกคณะที่ต้องการ</label>
+    <select id="faculty" required>
+      <option value="" disabled selected>-- เลือกคณะ --</option>
+      <option value="แพทยศาสตร์">แพทยศาสตร์</option>
+      <option value="ทันตแพทยศาสตร์">ทันตแพทยศาสตร์</option>
+      <option value="เภสัชศาสตร์">เภสัชศาสตร์</option>
+      <option value="สัตวแพทยศาสตร์">สัตวแพทยศาสตร์</option>
+      <option value="พยาบาลศาสตร์">พยาบาลศาสตร์</option>
+      <option value="วิศวกรรมศาสตร์">วิศวกรรมศาสตร์</option>
+      <option value="สถาปัตยกรรมศาสตร์">สถาปัตยกรรมศาสตร์</option>
+      <option value="สาธารณสุขศาสตร์">สาธารณสุขศาสตร์</option>
+      <option value="บริหารธุรกิจ">บริหารธุรกิจ</option>
+      <option value="นิติศาสตร์">นิติศาสตร์</option>
+      <option value="นิเทศศาสตร์">นิเทศศาสตร์</option>
+      <option value="ครุศาสตร์">ครุศาสตร์</option>
+      <option value="รัฐศาสตร์">รัฐศาสตร์</option>
+      <option value="เศรษฐศาสตร์">เศรษฐศาสตร์</option>
+      <option value="วิทยาศาสตร์">วิทยาศาสตร์</option>
+      <option value="เทคโนโลยีสารสนเทศ">เทคโนโลยีสารสนเทศ</option>
+    </select>
+
+    <p> เกรดขั้นต่ำของคณะ: <strong><span id="minGpa">-</span></strong></p>
+
+    <label for="gpa41">GPA ม.4 เทอม 1</label>
+    <input type="number" step="0.01" min="0" max="4" id="gpa41" placeholder="เช่น 3.25" />
+
+    <label for="gpa42">GPA ม.4 เทอม 2</label>
+    <input type="number" step="0.01" min="0" max="4" id="gpa42" placeholder="เช่น 3.50" />
+
+    <label for="gpa51">GPA ม.5 เทอม 1</label>
+    <input type="number" step="0.01" min="0" max="4" id="gpa51" placeholder="เช่น 3.60" />
+
+    <label for="gpa52">GPA ม.5 เทอม 2</label>
+    <input type="number" step="0.01" min="0" max="4" id="gpa52" placeholder="เช่น 3.70" />
+
+    <button onclick="calculate()">คำนวณ</button>
+
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    const facultyMinGPA = {
+      "แพทยศาสตร์": 3.75,
+      "ทันตแพทยศาสตร์": 3.70,
+      "เภสัชศาสตร์": 3.65,
+      "สัตวแพทยศาสตร์": 3.60,
+      "พยาบาลศาสตร์": 3.50,
+      "วิศวกรรมศาสตร์": 3.00,
+      "สถาปัตยกรรมศาสตร์": 3.10,
+      "สาธารณสุขศาสตร์": 3.30,
+      "บริหารธุรกิจ": 3.20,
+      "นิติศาสตร์": 3.40,
+      "นิเทศศาสตร์": 2.80,
+      "ครุศาสตร์": 2.90,
+      "รัฐศาสตร์": 3.00,
+      "เศรษฐศาสตร์": 3.10,
+      "วิทยาศาสตร์": 3.20,
+      "เทคโนโลยีสารสนเทศ": 3.15,
+    };
+
+    const facultySelect = document.getElementById("faculty");
+    const minGpaSpan = document.getElementById("minGpa");
+    const resultDiv = document.getElementById("result");
+
+    facultySelect.addEventListener("change", () => {
+      const fac = facultySelect.value;
+      minGpaSpan.textContent = facultyMinGPA[fac] ? facultyMinGPA[fac].toFixed(2) : "-";
+      resultDiv.innerHTML = "";
+    });
+
+    function calculate() {
+      const fac = facultySelect.value;
+      if (!fac) {
+        alert("กรุณาเลือกคณะก่อนคำนวณ");
+        return;
+      }
+
+      const minGpa = facultyMinGPA[fac];
+
+      const gpa41 = parseFloat(document.getElementById("gpa41").value);
+      const gpa42 = parseFloat(document.getElementById("gpa42").value);
+      const gpa51 = parseFloat(document.getElementById("gpa51").value);
+      const gpa52 = parseFloat(document.getElementById("gpa52").value);
+
+      if (
+        isNaN(gpa41) || gpa41 < 0 || gpa41 > 4 ||
+        isNaN(gpa42) || gpa42 < 0 || gpa42 > 4 ||
+        isNaN(gpa51) || gpa51 < 0 || gpa51 > 4 ||
+        isNaN(gpa52) || gpa52 < 0 || gpa52 > 4
+      ) {
+        alert("กรุณากรอก GPA ให้ถูกต้อง (0.00 - 4.00) ในทุกเทอม");
+        return;
+      }
+
+      const currentTotal = gpa41 + gpa42 + gpa51 + gpa52;
+      const neededGpa61 = 5 * minGpa - currentTotal;
+
+      let message = "";
+      if (neededGpa61 <= 0) {
+        const gpax = (currentTotal + minGpa) / 5;
+        message = `
+          <div class="success">
+            🎉 <strong>ยินดีด้วย!</strong> เกรดคุณมีโอกาสเข้าคณะ <strong>${fac}</strong> ได้<br>
+            GPAX ประมาณ: <strong>${gpax.toFixed(2)}</strong><br>
+            แต่ถ้าทำเกรดได้ดีกว่าเป้าหมายก็จะมีโอกาสติดมากขึ้นนะ ✨
+          </div>`;
+      } else if (neededGpa61 > 4) {
+        message = `
+          <div class="fail">
+            😢 <strong>เกรดของคุณไม่ถึงขั้นต่ำ</strong><br>
+            คุณต้องทำเกรด ม.6 เทอม 1 ให้ได้ <strong>${neededGpa61.toFixed(2)}</strong> ซึ่งเกิน 4.00<br>
+            ลองพยายามดูนะ สู้ ๆ!
+          </div>`;
+      } else {
+        message = `
+          <div class="success">
+            ✨ คุณยังมีโอกาส!<br>
+            ถ้าต้องการเข้าคณะ <strong>${fac}</strong><br>
+            คุณต้องทำเกรด ม.6 เทอม 1 ให้ได้อย่างน้อย <strong>${neededGpa61.toFixed(2)}</strong>
+          </div>`;
+      }
+
+      resultDiv.innerHTML = message;
+    }
+  </script>
+
+</body>
+</html>
