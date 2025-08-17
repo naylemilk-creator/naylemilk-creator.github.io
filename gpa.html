@@ -1,299 +1,302 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>คำนวณ GPA เพื่อเกรดในฝัน</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
-
-    body {
-      font-family: 'Prompt', sans-serif;
-      background-color: #f4f7f9;
-      color: #2c3e50;
-      padding: 20px;
-      max-width: 900px;
-      margin: auto;
-      line-height: 1.6;
-    }
-
-    h1 {
-      text-align: center;
-      color: #34495e;
-      margin-bottom: 30px;
-      font-weight: 700;
-    }
-    h2 {
-      color: #34495e;
-      margin-top: 30px;
-      margin-bottom: 15px;
-      font-weight: 500;
-      border-bottom: 2px solid #2980b9;
-      padding-bottom: 5px;
-    }
-    h3 {
-      color: #34495e;
-      margin-top: 10px;
-      font-weight: 500;
-    }
-
-    .box {
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      border: 1px solid #d1d8e0;
-    }
-
-    label {
-      display: block;
-      font-weight: 500;
-      margin-bottom: 6px;
-      margin-top: 15px;
-      color: #34495e;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    select {
-      width: 100%;
-      font-size: 18px;
-      height: 44px;
-      line-height: 44px;
-      padding: 0 12px;
-      border: 1.5px solid #bdc3c7;
-      border-radius: 6px;
-      color: #2c3e50;
-      transition: border-color 0.3s;
-      box-sizing: border-box;
-    }
-
-    input[type="text"]:focus,
-    input[type="number"]:focus,
-    select:focus {
-      outline: none;
-      border-color: #2980b9;
-      box-shadow: 0 0 6px rgba(41, 128, 185, 0.4);
-    }
-
-    button {
-      background-color: #2980b9;
-      color: white;
-      border: none;
-      padding: 14px 25px;
-      font-size: 18px;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 20px;
-      transition: background-color 0.3s;
-      width: 100%;
-      max-width: 300px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      font-weight: 700;
-      box-shadow: 0 4px 8px rgba(41, 128, 185, 0.3);
-    }
-
-    button:hover {
-      background-color: #1f6391;
-    }
-
-    .success {
-      background-color: #dff0d8;
-      border-left: 5px solid #27ae60;
-      color: #2c662d;
-      padding: 15px;
-      border-radius: 6px;
-      margin-bottom: 10px;
-    }
-
-    .warning {
-      background-color: #fcf8e3;
-      border-left: 5px solid #f39c12;
-      color: #8a6d3b;
-      padding: 15px;
-      border-radius: 6px;
-      margin-bottom: 10px;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 15px 10px;
-      }
-      button {
-        max-width: 100%;
-      }
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>คำนวณ GPA เพื่อเกรดในฝัน</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f4f7f9;
+            color: #2c3e50;
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+            color: #34495e;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 5px;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+        .box {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 1px solid #d1d8e0;
+        }
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 6px;
+            margin-top: 15px;
+            color: #34495e;
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            font-size: 18px;
+            height: 44px;
+            line-height: 44px;
+            padding: 0 12px;
+            border: 1.5px solid #bdc3c7;
+            border-radius: 6px;
+            color: #2c3e50;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: #2980b9;
+            box-shadow: 0 0 6px rgba(41, 128, 185, 0.4);
+        }
+        button {
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+            width: 100%;
+            max-width: 300px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 700;
+            box-shadow: 0 4px 8px rgba(41, 128, 185, 0.3);
+        }
+        button:hover {
+            background-color: #1f6391;
+        }
+        .success {
+            background-color: #dff0d8;
+            border-left: 5px solid #27ae60;
+            color: #2c662d;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        .warning {
+            background-color: #fcf8e3;
+            border-left: 5px solid #f39c12;
+            color: #8a6d3b;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        @media (max-width: 600px) {
+            body { padding: 15px 10px; }
+            button { max-width: 100%; }
+        }
+    </style>
 </head>
 <body>
+    <div class="box">
+        <h1>คำนวณเกรดรายวิชาและเกรดเฉลี่ย (GPA)</h1>
+<p class="subtext"> </p><b> &nbsp  ถ้าต้องการคำนวณแค่วิชาเดียว ก็สามารถเพิ่มเพียง 1 วิชาแล้วคำนวณได้เลย <b><br>
+        <label for="targetGPA">เกรดเป้าหมายรวม (GPA):</label>
+        <input type="number" id="targetGPA" step="0.5" min="0" max="4" placeholder="เช่น 3.0" />
 
-  <div class="box">
-    <h1>คำนวณเกรดรายวิชาและเกรดเฉลี่ย (GPA) </h1>
+        <label for="midFull">คะแนนเต็มของระหว่างภาค:</label>
+        <input type="number" id="midFull" value="50" min="1" />
 
-    <label for="targetGPA">เกรดเป้าหมาย (GPA):</label>
-    <input type="number" id="targetGPA" step="0.5" min="0" max="4" placeholder="เช่น 3.0" />
+        <label for="finalFull">คะแนนเต็มของปลายภาค:</label>
+        <input type="number" id="finalFull" value="50" min="1" />
+    </div>
 
-    <label for="midFull">คะแนนเต็มของระหว่างภาค:</label>
-    <input type="number" id="midFull" value="50" min="1" />
+    <div id="subjects"></div>
+    <button onclick="addSubject()">+ เพิ่มวิชา</button>
+    <button onclick="calculate()">คำนวณ</button>
 
-    <label for="finalFull">คะแนนเต็มของปลายภาค:</label>
-    <input type="number" id="finalFull" value="50" min="1" />
-  </div>
+    <div id="results"></div>
 
-  <div id="subjects"></div>
+    <script>
+        let subjectCount = 0;
+        const gradeScale = [
+            { grade: 4.0, min: 80 },
+            { grade: 3.5, min: 75 },
+            { grade: 3.0, min: 70 },
+            { grade: 2.5, min: 65 },
+            { grade: 2.0, min: 60 },
+            { grade: 1.5, min: 55 },
+            { grade: 1.0, min: 50 },
+            { grade: 0.0, min: 0 }
+        ];
 
-  <button onclick="addSubject()">+ เพิ่มวิชา</button>
+        function addSubject() {
+            subjectCount++;
+            const container = document.createElement('div');
+            container.className = 'box';
+            container.innerHTML = `
+                <h3>วิชา ${subjectCount}</h3>
+                <label for="name${subjectCount}">ชื่อวิชา:</label>
+                <input type="text" id="name${subjectCount}" placeholder="เช่น คณิตศาสตร์">
 
-  <button onclick="calculate()">คำนวณ</button>
+                <label for="credit${subjectCount}">หน่วยกิต:</label>
+                <input type="number" id="credit${subjectCount}" min="0" step="0.5" placeholder="เช่น 3">
 
-  <div id="results"></div>
+                <label for="targetGPA${subjectCount}">เกรดเป้าหมายสำหรับวิชานี้ (เลือกได้):</label>
+                <input type="number" id="targetGPA${subjectCount}" step="0.5" min="0" max="4" placeholder="ใช้เกรดเป้าหมายรวมหากว่าง">
 
-<script>
-  let subjectCount = 0;
+                <label for="inputType${subjectCount}">เลือกรูปแบบการกรอกคะแนนระหว่างภาค:</label>
+                <select id="inputType${subjectCount}" onchange="toggleInput(${subjectCount})">
+                    <option value="score">คะแนน (จากคะแนนเต็ม)</option>
+                    <option value="gpa">GPA (0 - 4)</option>
+                </select>
 
-  const gradeScale = [
-    { grade: 4.0, min: 80 },
-    { grade: 3.5, min: 75 },
-    { grade: 3.0, min: 70 },
-    { grade: 2.5, min: 65 },
-    { grade: 2.0, min: 60 },
-    { grade: 1.5, min: 55 },
-    { grade: 1.0, min: 50 },
-    { grade: 0.0, min: 0 }
-  ];
+                <div id="scoreInput${subjectCount}">
+                    <label for="midScore${subjectCount}">คะแนนระหว่างภาค:</label>
+                    <input type="number" id="midScore${subjectCount}" min="0" placeholder="เช่น 40">
+                </div>
 
-  function addSubject() {
-    subjectCount++;
-    const container = document.createElement('div');
-    container.className = 'box';
-    container.innerHTML = `
-      <h3>วิชา ${subjectCount}</h3>
-      <label for="name${subjectCount}">ชื่อวิชา:</label>
-      <input type="text" id="name${subjectCount}" placeholder="เช่น คณิตศาสตร์">
-
-      <label for="credit${subjectCount}">หน่วยกิต:</label>
-      <input type="number" id="credit${subjectCount}" min="0" step="0.5" placeholder="เช่น 3">
-
-      <label for="inputType${subjectCount}">เลือกรูปแบบการกรอกคะแนนระหว่างภาค:</label>
-      <select id="inputType${subjectCount}" onchange="toggleInput(${subjectCount})">
-        <option value="score">คะแนน (จากคะแนนเต็ม)</option>
-        <option value="gpa">GPA (0 - 4)</option>
-      </select>
-
-      <div id="scoreInput${subjectCount}">
-        <label for="midScore${subjectCount}">คะแนนระหว่างภาค:</label>
-        <input type="number" id="midScore${subjectCount}" min="0" placeholder="เช่น 40">
-      </div>
-
-      <div id="gpaInput${subjectCount}" style="display:none;">
-        <label for="midGPA${subjectCount}">GPA ระหว่างภาค:</label>
-        <input type="number" id="midGPA${subjectCount}" min="0" max="4" step="0.5" placeholder="เช่น 3.5">
-      </div>
-    `;
-    document.getElementById('subjects').appendChild(container);
-  }
-
-  function toggleInput(id) {
-    const type = document.getElementById(`inputType${id}`).value;
-    document.getElementById(`scoreInput${id}`).style.display = type === "score" ? "block" : "none";
-    document.getElementById(`gpaInput${id}`).style.display = type === "gpa" ? "block" : "none";
-  }
-
-  // แปลง GPA เป็นเปอร์เซ็นต์ขั้นต่ำ
-  function gpaToMinPercent(gpa) {
-    const found = gradeScale.find(g => g.grade === gpa);
-    return found ? found.min : null;
-  }
-
-  function calculate() {
-    const targetGPA = parseFloat(document.getElementById("targetGPA").value);
-    const midFull = parseFloat(document.getElementById("midFull").value);
-    const finalFull = parseFloat(document.getElementById("finalFull").value);
-
-    if (isNaN(targetGPA) || isNaN(midFull) || isNaN(finalFull)) {
-      alert("กรุณากรอกข้อมูลให้ครบถ้วน");
-      return;
-    }
-
-    const targetPercent = gpaToMinPercent(targetGPA);
-    if (targetPercent === null) {
-      alert("กรุณากรอกเกรดเป้าหมายในช่วง 0 - 4 เท่านั้น");
-      return;
-    }
-
-    let totalCredits = 0;
-    let totalGradePoints = 0;
-    let resultHTML = "<h2>ผลลัพธ์:</h2>";
-
-    for (let i = 1; i <= subjectCount; i++) {
-      const name = document.getElementById(`name${i}`)?.value.trim() || `วิชา ${i}`;
-      const credit = parseFloat(document.getElementById(`credit${i}`)?.value);
-
-      if (isNaN(credit)) {
-        resultHTML += `<p>❌ โปรดกรอกหน่วยกิตให้ครบใน "${name}"</p>`;
-        continue;
-      }
-
-      const inputType = document.getElementById(`inputType${i}`).value;
-      let midScorePercent = 0;
-
-      if (inputType === "score") {
-        const midScore = parseFloat(document.getElementById(`midScore${i}`).value);
-        if (isNaN(midScore)) {
-          resultHTML += `<p>❌ คะแนนระหว่างภาคไม่ถูกต้องใน "${name}"</p>`;
-          continue;
+                <div id="gpaInput${subjectCount}" style="display:none;">
+                    <label for="midGPA${subjectCount}">GPA ระหว่างภาค:</label>
+                    <input type="number" id="midGPA${subjectCount}" min="0" max="4" step="0.5" placeholder="เช่น 3.5">
+                </div>
+            `;
+            document.getElementById('subjects').appendChild(container);
         }
-        midScorePercent = (midScore / midFull) * 100;
-      } else {
-        const midGPA = parseFloat(document.getElementById(`midGPA${i}`).value);
-        if (isNaN(midGPA)) {
-          resultHTML += `<p>❌ GPA ระหว่างภาคไม่ถูกต้องใน "${name}"</p>`;
-          continue;
+
+        function toggleInput(id) {
+            const type = document.getElementById(`inputType${id}`).value;
+            document.getElementById(`scoreInput${id}`).style.display = type === "score" ? "block" : "none";
+            document.getElementById(`gpaInput${id}`).style.display = type === "gpa" ? "block" : "none";
         }
-        midScorePercent = gpaToMinPercent(midGPA);
-      }
 
-      // คำนวณว่าต้องการเปอร์เซ็นต์รวมเท่าไหร่
-      const requiredFinalPercent = targetPercent - midScorePercent;
-      const requiredFinalScore = (requiredFinalPercent / 100) * finalFull;
+        function gpaToScore(gpa) {
+            const found = gradeScale.find(g => g.grade === gpa);
+            return found ? found.min : null;
+        }
 
-      if (requiredFinalScore > finalFull) {
-        // หาเกรดที่เป็นไปได้สูงสุดแทน
-        const maxTotalPercent = midScorePercent + 100;
-        const fallback = gradeScale.findLast(g => g.min <= maxTotalPercent);
-        resultHTML += `
-          <div class="box warning">
-            <p><strong>${name}</strong> (${credit} หน่วยกิต)</p>
-            <p>⚠️ เกรด <strong>${targetGPA.toFixed(1)}</strong> อาจจะยังไม่ถึง 😢</p>
-            <p>👉 คุณอาจได้เกรด <strong>${fallback.grade.toFixed(1)}</strong></p>
-          </div>
-        `;
-        totalGradePoints += fallback.grade * credit;
-      } else {
-        resultHTML += `
-          <div class="box success">
-            <p><strong>${name}</strong> (${credit} หน่วยกิต)</p>
-            <p>✅ เกรด <strong>${targetGPA.toFixed(1)}</strong> มาแน่! 🎉</p>
-            <p>👉 คุณต้องทำปลายภาคอย่างน้อย <strong>${requiredFinalScore.toFixed(2)}</strong> / ${finalFull} คะแนน</p>
-          </div>
-        `;
-        totalGradePoints += targetGPA * credit;
-      }
+        function scoreToGPA(score) {
+            const found = gradeScale.find(g => score >= g.min);
+            return found ? found.grade : 0.0;
+        }
 
-      totalCredits += credit;
-    }
+        function calculate() {
+            const overallTargetGPA = parseFloat(document.getElementById("targetGPA").value);
+            const midFull = parseFloat(document.getElementById("midFull").value);
+            const finalFull = parseFloat(document.getElementById("finalFull").value);
 
-    if (totalCredits > 0 && subjectCount > 1) {
-      const gpa = totalGradePoints / totalCredits;
-      resultHTML += `<h3>🎓 เกรดเฉลี่ยรวมที่คาดว่าจะได้: <strong>${gpa.toFixed(2)}</strong></h3>`;
-    }
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = "";
 
-    document.getElementById("results").innerHTML = resultHTML;
-  }
-</script>
+            if (isNaN(midFull) || isNaN(finalFull) || subjectCount === 0) {
+                resultsDiv.innerHTML = `<div class="box warning"><p>❌ กรุณากรอกข้อมูลให้ครบถ้วนและเพิ่มวิชาอย่างน้อย 1 วิชา</p></div>`;
+                return;
+            }
 
+            let totalCredits = 0;
+            let totalGradePoints = 0;
+            let resultHTML = "<h2>ผลลัพธ์:</h2>";
+            let hasError = false;
+
+            for (let i = 1; i <= subjectCount; i++) {
+                const name = document.getElementById(`name${i}`)?.value.trim() || `วิชา ${i}`;
+                const credit = parseFloat(document.getElementById(`credit${i}`)?.value);
+                const subjectTargetGPA = parseFloat(document.getElementById(`targetGPA${i}`)?.value);
+                
+                let actualTargetGPA = isNaN(subjectTargetGPA) ? overallTargetGPA : subjectTargetGPA;
+
+                if (isNaN(credit)) {
+                    resultHTML += `<div class="box warning"><p>❌ โปรดกรอกหน่วยกิตให้ครบใน "${name}"</p></div>`;
+                    hasError = true;
+                    continue;
+                }
+                
+                if (isNaN(actualTargetGPA)) {
+                    resultHTML += `<div class="box warning"><p>❌ โปรดกรอกเกรดเป้าหมายใน "${name}" หรือ เกรดเป้าหมายรวม</p></div>`;
+                    hasError = true;
+                    continue;
+                }
+
+                const inputType = document.getElementById(`inputType${i}`).value;
+                let midScore = 0;
+
+                if (inputType === "score") {
+                    midScore = parseFloat(document.getElementById(`midScore${i}`).value);
+                    if (isNaN(midScore) || midScore < 0 || midScore > midFull) {
+                        resultHTML += `<div class="box warning"><p>❌ คะแนนระหว่างภาคไม่ถูกต้องใน "${name}"</p></div>`;
+                        hasError = true;
+                        continue;
+                    }
+                } else {
+                    const midGPA = parseFloat(document.getElementById(`midGPA${i}`).value);
+                    if (isNaN(midGPA) || midGPA < 0 || midGPA > 4) {
+                        resultHTML += `<div class="box warning"><p>❌ GPA ระหว่างภาคไม่ถูกต้องใน "${name}"</p></div>`;
+                        hasError = true;
+                        continue;
+                    }
+                    const scoreFromGPA = gpaToScore(midGPA);
+                    midScore = (scoreFromGPA / 100) * midFull;
+                }
+
+                const totalScoreFull = midFull + finalFull;
+                const currentTotalScore = midScore;
+
+                const maxScoreAchievable = currentTotalScore + finalFull;
+                const maxPercentageAchievable = (maxScoreAchievable / totalScoreFull) * 100;
+                const maxGPA = scoreToGPA(maxPercentageAchievable);
+
+                const totalTargetScore = gpaToScore(actualTargetGPA);
+                const targetScorePercentage = totalTargetScore / 100;
+                const requiredFinalScore = (targetScorePercentage * totalScoreFull) - currentTotalScore;
+
+                let finalMessage = '';
+                let finalDivClass = '';
+                let gradePoints = 0;
+
+                if (actualTargetGPA > maxGPA) {
+                    finalDivClass = 'box warning';
+                    finalMessage = `❌ ไม่สามารถถึงเกรด <strong>${actualTargetGPA.toFixed(1)}</strong> ได้<br>
+                                    ถึงแม้จะได้ปลายภาคเต็ม ${finalFull} คะแนน ก็จะได้เกรดสูงสุดแค่ <strong>${maxGPA.toFixed(1)}</strong> ลองเลือกเกรดเป้าหมายอื่นดูนะ เป็นกำลังใจให้! `;
+                    gradePoints = credit * maxGPA;
+                } else {
+                    finalDivClass = 'box success';
+                    finalMessage = `✅ เกรด <strong>${actualTargetGPA.toFixed(1)}</strong> เป็นไปได้ 🎉<br>
+                                    ต้องทำปลายภาคอย่างน้อย <strong>${Math.max(0, requiredFinalScore).toFixed(2)}</strong> / ${finalFull} คะแนน`;
+                    gradePoints = credit * actualTargetGPA;
+                }
+
+                resultHTML += `
+                    <div class="${finalDivClass}">
+                        <p><strong>${name}</strong> (${credit} หน่วยกิต)</p>
+                        <p>${finalMessage}</p>
+                    </div>
+                `;
+                
+                totalCredits += credit;
+                totalGradePoints += gradePoints;
+            }
+
+            if (subjectCount > 1 && totalCredits > 0 && !hasError) {
+                const gpa = totalGradePoints / totalCredits;
+                resultHTML += `<h3>🎓 เกรดเฉลี่ยรวมที่คาดว่าจะได้ : <strong>${gpa.toFixed(2)}</strong></h3>&nbsp (หากทำตามเป้าหมาย)`;
+            } else if (hasError) {
+                // No need to do anything, error messages are already in resultHTML
+            }
+
+            resultsDiv.innerHTML = resultHTML;
+        }
+    </script>
 </body>
 </html>
