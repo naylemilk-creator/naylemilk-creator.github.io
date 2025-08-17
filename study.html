@@ -1,95 +1,754 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ตัวช่วยคำนวณเกรดพร้อมพิชิตมหาวิทยาลัย </title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>แผนการเรียนรายสัปดาห์</title>
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap" rel="stylesheet" />
 
     <style>
         body {
             font-family: 'Prompt', sans-serif;
-            background-color: #f0f4f8;
+            background-color: #f4f4f4;
+            color: #2c3e50;
             margin: 0;
-            padding: 40px 20px;
-            color: #333;
+            padding: 20px;
         }
-
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
         h1 {
             text-align: center;
-            font-size: 2.2em;
-            margin-bottom: 50px;
-            color: #34495e;
+            color: #003366;
             font-weight: 600;
+            font-size: 28px;
+            margin-bottom: 25px;
         }
-      .subtext {
-    text-align: center;
-    font-size: 1em;
-    color: #555;
-    margin-top: -30px;
-    margin-bottom: 50px;
-      }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            max-width: 1000px;
-            margin: 0 auto;
+        .form-group {
+            margin-bottom: 20px;
         }
-
-        .box {
-            background: white;
-            border-radius: 16px;
-            padding: 30px 25px;
-            width: 300px;
+        label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #34495e;
+            display: block;
+            margin-bottom: 8px;
+        }
+        select, button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #0056b3;
+            background-color: #ecf2f8;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+        select:hover, select:focus {
+            background-color: #d7e3f4;
+            border-color: #004494;
+            outline: none;
+        }
+        button {
+            background-color: #0056b3;
+            color: #fff;
+            border: none;
+            font-weight: 500;
+            margin-top: 10px;
+            box-shadow: 0 3px 10px rgba(0, 86, 179, 0.4);
+        }
+        button:hover {
+            background-color: #004494;
+            box-shadow: 0 5px 15px rgba(0, 86, 179, 0.6);
+        }
+        #schedule-output {
+            margin-top: 30px;
+        }
+        h2 {
+            color: #003366;
+            font-weight: 500;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #0056b3;
+            padding-bottom: 6px;
+            font-size: 22px;
+        }
+        p.description {
+            font-size: 16px;
+            color: #34495e;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 15px;
+            color: #2c3e50;
+        }
+        th, td {
+            border: 1px solid #d1d9e6;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #e9eff7;
+            color: #0056b3;
+            font-weight: 500;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f2f6fb;
+        }
+        .note {
+            margin-top: 15px;
+            font-style: italic;
+            color: #34495e;
+            font-size: 14px;
             text-align: center;
+        }
+        .tcas-section {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #e8f0fa;
+            border-left: 6px solid #0056b3;
+            border-radius: 8px;
+        }
+        .tcas-section ul {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+        .tcas-section li {
+            margin-bottom: 8px;
+            font-size: 15px;
+            color: #2c3e50;
+        }
+        .tcas-section a {
+            display: inline-block;
+            margin-top: 10px;
+            background-color: #006699;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
             text-decoration: none;
-            color: #34495e;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid #e0e0e0;
+            font-weight: bold;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
         }
-
-        .box:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-        }
-
-        .box-title {
-            font-size: 1.1em;
-            font-weight: 600;
-            line-height: 1.5;
-        }
-
-        @media (max-width: 768px) {
-            .box {
-                width: 90%;
-            }
+        .tcas-section a:hover {
+            background-color: #004c80;
         }
     </style>
 </head>
 <body>
 
-    <h1>คุณอยากให้เราช่วยเรื่องไหนดี ?</h1>
-<p class="subtext">เว็บไซต์นี้จะช่วยวางแผนการเรียนของคุณ ให้คุณได้คาดคะเนเกรดที่ต้องการ ได้อย่างแม่นยำและรวดเร็ว โดยเหมาะสำหรับนักเรียน </p>
-
     <div class="container">
-        <a class="box" href="gpa.html">
-            <div class="box-title">คำนวณเกรดรายวิชาและเกรดเฉลี่ย (GPA)</div>
-        </a>
+        <h1>มาวางแผนการเรียนรายสัปดาห์กันเถอะ !</h1>
 
-        <a class="box" href="gpax.html">
-            <div class="box-title">คำนวณเกรดเฉลี่ยสะสม (GPAX) <br> สำหรับนักเรียนชั้นม.6 </div>
-        </a>
+        <div class="form-group">
+            <label for="grade-level">เลือกระดับชั้น</label>
+            <select id="grade-level">
+                <option value="" disabled selected>-- เลือกระดับชั้น --</option>
+                <option value="m4">ม.4</option>
+                <option value="m5">ม.5</option>
+                <option value="m6">ม.6</option>
+            </select>
+        </div>
 
-        <a class="box" href="study.html">
-            <div class="box-title">วางแผนการเรียน<br>(เหมาะสำหรับนักเรียนชั้น ม.ปลาย)</div>
-        </a>
+        <div class="form-group">
+            <label for="major-interest">เลือกสาย/คณะที่สนใจ (เพื่อปรับแผนการเรียน)</label>
+            <select id="major-interest">
+                <option value="general" selected>-- ไม่เน้นคณะใดเป็นพิเศษ --</option>
+                <option value="health">วิทยาศาสตร์สุขภาพ (แพทย์, ทันตะ, เภสัช)</option>
+                <option value="engineering">วิศวกรรมศาสตร์</option>
+                <option value="liberal_arts">อักษรศาสตร์ / ศิลปศาสตร์</option>
+                <option value="business">บริหารธุรกิจ / เศรษฐศาสตร์</option>
+            </select>
+        </div>
+
+        <button onclick="displaySchedule()">แสดงแผนการเรียน</button>
+
+        <div id="schedule-output"></div>
     </div>
+
+    <script>
+        const schedules = {
+            m4: {
+                general: [
+                    { day: "จันทร์ - ศุกร์", activities: [
+                        { time: "07:00 - 08:00", description: "ตื่นนอน, อาหารเช้า, เตรียมตัวไปโรงเรียน" },
+                        { time: "08:00 - 16:00", description: "เรียนที่โรงเรียน" },
+                        { time: "16:00 - 16:30", description: "เดินทางกลับบ้าน, พักผ่อนสั้นๆ" },
+                        { time: "16:30 - 17:30", description: "ทบทวนบทเรียนประจำวัน" },
+                        { time: "17:30 - 19:00", description: "ทานอาหารเย็น, พักผ่อน" },
+                        { time: "19:00 - 20:30", description: "เรียนพิเศษหรือทบทวนวิชาหลัก (เช่น คณิตศาสตร์)" },
+                        { time: "20:30 - 21:30", description: "ทำการบ้าน" },
+                        { time: "21:30 - 22:00", description: "พักผ่อน, เตรียมตัวเข้านอน" },
+                    ]},
+                    { day: "เสาร์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาที่ยาก (เช่น คณิตศาสตร์เพิ่มเติม)" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:30", description: "ทำแบบฝึกหัด, ตะลุยโจทย์" },
+                        { time: "15:30 - 17:00", description: "พักผ่อน, ออกกำลังกาย" },
+                        { time: "17:00 - 19:00", description: "สรุปเนื้อหาสัปดาห์ที่ผ่านมา" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "ดูหนัง/ฟังเพลง, กิจกรรมที่ชอบ" },
+                    ]},
+                    { day: "อาทิตย์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาภาษาไทยและสังคม" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:00", description: "เตรียมตัวสำหรับสัปดาห์ใหม่" },
+                        { time: "15:00 - 17:00", description: "กิจกรรมส่วนตัว, ผ่อนคลาย" },
+                        { time: "17:00 - 19:00", description: "ทบทวนเนื้อหาภาพรวม" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "เข้านอน" },
+                    ]}
+                ],
+                health: [
+                    { day: "จันทร์ - ศุกร์", activities: [
+                        { time: "07:00 - 08:00", description: "ตื่นนอน, อาหารเช้า, เตรียมตัวไปโรงเรียน" },
+                        { time: "08:00 - 16:00", description: "เรียนที่โรงเรียน" },
+                        { time: "16:00 - 16:30", description: "เดินทางกลับบ้าน, พักผ่อนสั้นๆ" },
+                        { time: "16:30 - 18:00", description: "ทบทวนบทเรียน**ชีววิทยา (ระบบร่างกาย, พันธุศาสตร์)** และ**เคมี (โครงสร้างอะตอม, พันธะเคมี)**" },
+                        { time: "18:00 - 19:00", description: "ทานอาหารเย็น, พักผ่อน" },
+                        { time: "19:00 - 20:30", description: "เรียนพิเศษหรือทบทวนวิชา**ฟิสิกส์ (กลศาสตร์)** และ**คณิตศาสตร์ (แคลคูลัส, สถิติ)**" },
+                        { time: "20:30 - 21:30", description: "ทำการบ้าน, ฝึกทำโจทย์" },
+                        { time: "21:30 - 22:00", description: "พักผ่อน, เตรียมตัวเข้านอน" },
+                    ]},
+                    { day: "เสาร์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "**เจาะลึกบทเรียนชีววิทยา/เคมี** ที่ยังไม่เข้าใจ เช่น กลไกการทำงานของเซลล์" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:30", description: "ทำแบบฝึกหัด, ตะลุยโจทย์เน้นวิชาชีวะ/เคมี" },
+                        { time: "15:30 - 17:00", description: "พักผ่อน, ออกกำลังกาย" },
+                        { time: "17:00 - 19:00", description: "สรุปเนื้อหาสัปดาห์ที่ผ่านมาด้วย**Mind Map**" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "ดูหนัง/ฟังเพลง, กิจกรรมที่ชอบ" },
+                    ]},
+                    { day: "อาทิตย์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาภาษาไทยและสังคม" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:00", description: "เตรียมตัวสำหรับสัปดาห์ใหม่" },
+                        { time: "15:00 - 17:00", description: "กิจกรรมส่วนตัว, ผ่อนคลาย" },
+                        { time: "17:00 - 19:00", description: "ทบทวนเนื้อหาภาพรวม" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "เข้านอน" },
+                    ]}
+                ],
+                engineering: [
+                    { day: "จันทร์ - ศุกร์", activities: [
+                        { time: "07:00 - 08:00", description: "ตื่นนอน, อาหารเช้า, เตรียมตัวไปโรงเรียน" },
+                        { time: "08:00 - 16:00", description: "เรียนที่โรงเรียน" },
+                        { time: "16:00 - 16:30", description: "เดินทางกลับบ้าน, พักผ่อนสั้นๆ" },
+                        { time: "16:30 - 18:00", description: "ทบทวนบทเรียน**ฟิสิกส์ (กลศาสตร์, ไฟฟ้า)** และ**คณิตศาสตร์ (แคลคูลัส)**" },
+                        { time: "18:00 - 19:00", description: "ทานอาหารเย็น, พักผ่อน" },
+                        { time: "19:00 - 20:30", description: "เรียนพิเศษหรือทบทวนวิชา**เคมี (พันธะเคมี)** และ**ภาษาอังกฤษ**" },
+                        { time: "20:30 - 21:30", description: "ทำการบ้าน, ฝึกทำโจทย์" },
+                        { time: "21:30 - 22:00", description: "พักผ่อน, เตรียมตัวเข้านอน" },
+                    ]},
+                    { day: "เสาร์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "**เจาะลึกบทเรียนฟิสิกส์/คณิตศาสตร์** ฝึกทำโจทย์ประยุกต์และโจทย์ยาก" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:30", description: "ทำแบบฝึกหัด, ตะลุยโจทย์ประยุกต์" },
+                        { time: "15:30 - 17:00", description: "พักผ่อน, ออกกำลังกาย" },
+                        { time: "17:00 - 19:00", description: "สรุปเนื้อหาสัปดาห์ที่ผ่านมา" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "ดูหนัง/ฟังเพลง, กิจกรรมที่ชอบ" },
+                    ]},
+                    { day: "อาทิตย์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาภาษาไทยและสังคม" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:00", description: "เตรียมตัวสำหรับสัปดาห์ใหม่" },
+                        { time: "15:00 - 17:00", description: "กิจกรรมส่วนตัว, ผ่อนคลาย" },
+                        { time: "17:00 - 19:00", description: "ทบทวนเนื้อหาภาพรวม" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "เข้านอน" },
+                    ]}
+                ],
+                liberal_arts: [
+                    { day: "จันทร์ - ศุกร์", activities: [
+                        { time: "07:00 - 08:00", description: "ตื่นนอน, อาหารเช้า, เตรียมตัวไปโรงเรียน" },
+                        { time: "08:00 - 16:00", description: "เรียนที่โรงเรียน" },
+                        { time: "16:00 - 16:30", description: "เดินทางกลับบ้าน, พักผ่อนสั้นๆ" },
+                        { time: "16:30 - 18:00", description: "ทบทวนบทเรียน**ภาษาอังกฤษ (Reading Comprehension)** และ**ภาษาไทย (วิเคราะห์วรรณคดี)**" },
+                        { time: "18:00 - 19:00", description: "ทานอาหารเย็น, พักผ่อน" },
+                        { time: "19:00 - 20:30", description: "เรียนพิเศษหรือทบทวนวิชา**สังคม**และฝึกเขียนเรียงความ" },
+                        { time: "20:30 - 21:30", description: "ทำการบ้าน, ฝึกเขียนเรียงความ" },
+                        { time: "21:30 - 22:00", description: "พักผ่อน, เตรียมตัวเข้านอน" },
+                    ]},
+                    { day: "เสาร์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "**เจาะลึกบทเรียนภาษาอังกฤษ/ภาษาไทย** ฝึกทำโจทย์ Vocabulary และ Grammar" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:30", description: "ทำแบบฝึกหัด, ตะลุยโจทย์" },
+                        { time: "15:30 - 17:00", description: "พักผ่อน, ออกกำลังกาย" },
+                        { time: "17:00 - 19:00", description: "สรุปเนื้อหาสัปดาห์ที่ผ่านมา" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "ดูหนัง/ฟังเพลง, กิจกรรมที่ชอบ" },
+                    ]},
+                    { day: "อาทิตย์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาสังคม" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:00", description: "เตรียมตัวสำหรับสัปดาห์ใหม่" },
+                        { time: "15:00 - 17:00", description: "กิจกรรมส่วนตัว, ผ่อนคลาย" },
+                        { time: "17:00 - 19:00", description: "ทบทวนเนื้อหาภาพรวม" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "เข้านอน" },
+                    ]}
+                ],
+                business: [
+                    { day: "จันทร์ - ศุกร์", activities: [
+                        { time: "07:00 - 08:00", description: "ตื่นนอน, อาหารเช้า, เตรียมตัวไปโรงเรียน" },
+                        { time: "08:00 - 16:00", description: "เรียนที่โรงเรียน" },
+                        { time: "16:00 - 16:30", description: "เดินทางกลับบ้าน, พักผ่อนสั้นๆ" },
+                        { time: "16:30 - 18:00", description: "ทบทวนบทเรียน**คณิตศาสตร์ (ฟังก์ชัน, สถิติ)** และ**ภาษาอังกฤษ**" },
+                        { time: "18:00 - 19:00", description: "ทานอาหารเย็น, พักผ่อน" },
+                        { time: "19:00 - 20:30", description: "เรียนพิเศษหรือทบทวนวิชา**สังคม (เศรษฐศาสตร์)** และ**ภาษาไทย**" },
+                        { time: "20:30 - 21:30", description: "ทำการบ้าน, ฝึกทำโจทย์" },
+                        { time: "21:30 - 22:00", description: "พักผ่อน, เตรียมตัวเข้านอน" },
+                    ]},
+                    { day: "เสาร์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "**เจาะลึกบทเรียนคณิตศาสตร์/ภาษาอังกฤษ** ฝึกวิเคราะห์กราฟเศรษฐศาสตร์" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:30", description: "ทำแบบฝึกหัด, ตะลุยโจทย์" },
+                        { time: "15:30 - 17:00", description: "พักผ่อน, ออกกำลังกาย" },
+                        { time: "17:00 - 19:00", description: "สรุปเนื้อหาสัปดาห์ที่ผ่านมา" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "ดูหนัง/ฟังเพลง, กิจกรรมที่ชอบ" },
+                    ]},
+                    { day: "อาทิตย์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาสังคม/ภาษาไทย" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:00", description: "เตรียมตัวสำหรับสัปดาห์ใหม่" },
+                        { time: "15:00 - 17:00", description: "กิจกรรมส่วนตัว, ผ่อนคลาย" },
+                        { time: "17:00 - 19:00", description: "ทบทวนเนื้อหาภาพรวม" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "เข้านอน" },
+                    ]}
+                ]
+            },
+            m5: {
+                general: [
+                    { day: "จันทร์ - ศุกร์", activities: [
+                        { time: "07:00 - 08:00", description: "ตื่นนอน, อาหารเช้า, เตรียมตัวไปโรงเรียน" },
+                        { time: "08:00 - 16:00", description: "เรียนที่โรงเรียน" },
+                        { time: "16:00 - 16:30", description: "เดินทางกลับบ้าน, พักผ่อนสั้นๆ" },
+                        { time: "16:30 - 18:00", description: "ทบทวนบทเรียนประจำวัน (เนื้อหาเข้มข้นขึ้น)" },
+                        { time: "18:00 - 19:00", description: "ทานอาหารเย็น, พักผ่อน" },
+                        { time: "19:00 - 20:30", description: "เรียนพิเศษหรือทบทวนวิชาหลัก (เน้นเนื้อหา ม.5)" },
+                        { time: "20:30 - 21:30", description: "ทำการบ้าน" },
+                        { time: "21:30 - 22:00", description: "พักผ่อน, เตรียมตัวเข้านอน" },
+                    ]},
+                    { day: "เสาร์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาคณิตศาสตร์/ฟิสิกส์" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:30", description: "ฝึกทำข้อสอบเก่า (เริ่มเตรียมตัวเข้ามหาวิทยาลัย)" },
+                        { time: "15:30 - 17:00", description: "พักผ่อน, ออกกำลังกาย" },
+                        { time: "17:00 - 19:00", description: "สรุปเนื้อหาสัปดาห์ที่ผ่านมา" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "ดูหนัง/ฟังเพลง, กิจกรรมที่ชอบ" },
+                    ]},
+                    { day: "อาทิตย์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาภาษาไทยและสังคม" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:00", description: "เตรียมตัวสำหรับสัปดาห์ใหม่" },
+                        { time: "15:00 - 17:00", description: "กิจกรรมส่วนตัว, ผ่อนคลาย" },
+                        { time: "17:00 - 19:00", description: "ทบทวนเนื้อหาภาพรวม" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "เข้านอน" },
+                    ]}
+                ],
+                health: [
+                    { day: "จันทร์ - ศุกร์", activities: [
+                        { time: "07:00 - 08:00", description: "ตื่นนอน, อาหารเช้า, เตรียมตัวไปโรงเรียน" },
+                        { time: "08:00 - 16:00", description: "เรียนที่โรงเรียน" },
+                        { time: "16:00 - 16:30", description: "เดินทางกลับบ้าน, พักผ่อนสั้นๆ" },
+                        { time: "16:30 - 18:00", description: "ทบทวนบทเรียน**ชีววิทยา (ระบบร่างกาย, พันธุศาสตร์)** และ**เคมี (สมดุลเคมี, อัตราการเกิดปฏิกิริยา)**" },
+                        { time: "18:00 - 19:00", description: "ทานอาหารเย็น, พักผ่อน" },
+                        { time: "19:00 - 20:30", description: "เรียนพิเศษหรือทบทวนวิชา**ฟิสิกส์ (แสง, เสียง)** และ**คณิตศาสตร์ (แคลคูลัส)**" },
+                        { time: "20:30 - 21:30", description: "ทำการบ้าน, ฝึกทำโจทย์" },
+                        { time: "21:30 - 22:00", description: "พักผ่อน, เตรียมตัวเข้านอน" },
+                    ]},
+                    { day: "เสาร์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "**เจาะลึกบทเรียนชีววิทยา/เคมี** เช่น การทำงานของเอนไซม์, การคำนวณสารเคมี" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:30", description: "ทำแบบฝึกหัด, ตะลุยโจทย์เน้นวิชาชีวะ/เคมี" },
+                        { time: "15:30 - 17:00", description: "พักผ่อน, ออกกำลังกาย" },
+                        { time: "17:00 - 19:00", description: "สรุปเนื้อหาสัปดาห์ที่ผ่านมาด้วย**Mind Map**" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "ดูหนัง/ฟังเพลง, กิจกรรมที่ชอบ" },
+                    ]},
+                    { day: "อาทิตย์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาภาษาไทยและสังคม" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:00", description: "เตรียมตัวสำหรับสัปดาห์ใหม่" },
+                        { time: "15:00 - 17:00", description: "กิจกรรมส่วนตัว, ผ่อนคลาย" },
+                        { time: "17:00 - 19:00", description: "ทบทวนเนื้อหาภาพรวม" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "เข้านอน" },
+                    ]}
+                ],
+                engineering: [
+                    { day: "จันทร์ - ศุกร์", activities: [
+                        { time: "07:00 - 08:00", description: "ตื่นนอน, อาหารเช้า, เตรียมตัวไปโรงเรียน" },
+                        { time: "08:00 - 16:00", description: "เรียนที่โรงเรียน" },
+                        { time: "16:00 - 16:30", description: "เดินทางกลับบ้าน, พักผ่อนสั้นๆ" },
+                        { time: "16:30 - 18:00", description: "ทบทวนบทเรียน**ฟิสิกส์ (การเคลื่อนที่แบบซับซ้อน)** และ**คณิตศาสตร์ (สถิติ)**" },
+                        { time: "18:00 - 19:00", description: "ทานอาหารเย็น, พักผ่อน" },
+                        { time: "19:00 - 20:30", description: "เรียนพิเศษหรือทบทวนวิชา**เคมี (ปิโตรเลียม)** และ**ภาษาอังกฤษ**" },
+                        { time: "20:30 - 21:30", description: "ทำการบ้าน, ฝึกทำโจทย์" },
+                        { time: "21:30 - 22:00", description: "พักผ่อน, เตรียมตัวเข้านอน" },
+                    ]},
+                    { day: "เสาร์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "**เจาะลึกบทเรียนฟิสิกส์/คณิตศาสตร์** ฝึกทำโจทย์ประยุกต์และโจทย์ยาก" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:30", description: "ทำแบบฝึกหัด, ตะลุยโจทย์ประยุกต์" },
+                        { time: "15:30 - 17:00", description: "พักผ่อน, ออกกำลังกาย" },
+                        { time: "17:00 - 19:00", description: "สรุปเนื้อหาสัปดาห์ที่ผ่านมา" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "ดูหนัง/ฟังเพลง, กิจกรรมที่ชอบ" },
+                    ]},
+                    { day: "อาทิตย์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาภาษาไทยและสังคม" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:00", description: "เตรียมตัวสำหรับสัปดาห์ใหม่" },
+                        { time: "15:00 - 17:00", description: "กิจกรรมส่วนตัว, ผ่อนคลาย" },
+                        { time: "17:00 - 19:00", description: "ทบทวนเนื้อหาภาพรวม" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "เข้านอน" },
+                    ]}
+                ],
+                liberal_arts: [
+                    { day: "จันทร์ - ศุกร์", activities: [
+                        { time: "07:00 - 08:00", description: "ตื่นนอน, อาหารเช้า, เตรียมตัวไปโรงเรียน" },
+                        { time: "08:00 - 16:00", description: "เรียนที่โรงเรียน" },
+                        { time: "16:00 - 16:30", description: "เดินทางกลับบ้าน, พักผ่อนสั้นๆ" },
+                        { time: "16:30 - 18:00", description: "ทบทวนบทเรียน**ภาษาอังกฤษ (การเขียนเชิงวิชาการ)** และ**ภาษาไทย (วิเคราะห์ข่าวสาร)**" },
+                        { time: "18:00 - 19:00", description: "ทานอาหารเย็น, พักผ่อน" },
+                        { time: "19:00 - 20:30", description: "เรียนพิเศษหรือทบทวนวิชา**สังคม**และฝึกเขียนเรียงความ" },
+                        { time: "20:30 - 21:30", description: "ทำการบ้าน, ฝึกเขียนเรียงความ" },
+                        { time: "21:30 - 22:00", description: "พักผ่อน, เตรียมตัวเข้านอน" },
+                    ]},
+                    { day: "เสาร์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "**เจาะลึกบทเรียนภาษาอังกฤษ/ภาษาไทย** ฝึกทำโจทย์ Reading Comprehension ที่ซับซ้อน" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:30", description: "ทำแบบฝึกหัด, ตะลุยโจทย์" },
+                        { time: "15:30 - 17:00", description: "พักผ่อน, ออกกำลังกาย" },
+                        { time: "17:00 - 19:00", description: "สรุปเนื้อหาสัปดาห์ที่ผ่านมา" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "ดูหนัง/ฟังเพลง, กิจกรรมที่ชอบ" },
+                    ]},
+                    { day: "อาทิตย์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาสังคม" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:00", description: "เตรียมตัวสำหรับสัปดาห์ใหม่" },
+                        { time: "15:00 - 17:00", description: "กิจกรรมส่วนตัว, ผ่อนคลาย" },
+                        { time: "17:00 - 19:00", description: "ทบทวนเนื้อหาภาพรวม" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "เข้านอน" },
+                    ]}
+                ],
+                business: [
+                    { day: "จันทร์ - ศุกร์", activities: [
+                        { time: "07:00 - 08:00", description: "ตื่นนอน, อาหารเช้า, เตรียมตัวไปโรงเรียน" },
+                        { time: "08:00 - 16:00", description: "เรียนที่โรงเรียน" },
+                        { time: "16:00 - 16:30", description: "เดินทางกลับบ้าน, พักผ่อนสั้นๆ" },
+                        { time: "16:30 - 18:00", description: "ทบทวนบทเรียน**คณิตศาสตร์ (สถิติ)** และ**ภาษาอังกฤษ (คำศัพท์ธุรกิจ)**" },
+                        { time: "18:00 - 19:00", description: "ทานอาหารเย็น, พักผ่อน" },
+                        { time: "19:00 - 20:30", description: "เรียนพิเศษหรือทบทวนวิชา**สังคม (เศรษฐศาสตร์)** และ**ภาษาไทย**" },
+                        { time: "20:30 - 21:30", description: "ทำการบ้าน, ฝึกทำโจทย์" },
+                        { time: "21:30 - 22:00", description: "พักผ่อน, เตรียมตัวเข้านอน" },
+                    ]},
+                    { day: "เสาร์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "**เจาะลึกบทเรียนคณิตศาสตร์/ภาษาอังกฤษ** ฝึกวิเคราะห์กราฟเศรษฐศาสตร์" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:30", description: "ทำแบบฝึกหัด, ตะลุยโจทย์" },
+                        { time: "15:30 - 17:00", description: "พักผ่อน, ออกกำลังกาย" },
+                        { time: "17:00 - 19:00", description: "สรุปเนื้อหาสัปดาห์ที่ผ่านมา" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "ดูหนัง/ฟังเพลง, กิจกรรมที่ชอบ" },
+                    ]},
+                    { day: "อาทิตย์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาสังคม/ภาษาไทย" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:00", description: "เตรียมตัวสำหรับสัปดาห์ใหม่" },
+                        { time: "15:00 - 17:00", description: "กิจกรรมส่วนตัว, ผ่อนคลาย" },
+                        { time: "17:00 - 19:00", description: "ทบทวนเนื้อหาภาพรวม" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "เข้านอน" },
+                    ]}
+                ]
+            },
+            m6: {
+                general: [
+                    { day: "จันทร์ - ศุกร์", activities: [
+                        { time: "07:00 - 08:00", description: "ตื่นนอน, อาหารเช้า, เตรียมตัวไปโรงเรียน" },
+                        { time: "08:00 - 16:00", description: "เรียนที่โรงเรียน" },
+                        { time: "16:00 - 16:30", description: "เดินทางกลับบ้าน, พักผ่อนสั้นๆ" },
+                        { time: "16:30 - 18:30", description: "ตะลุยโจทย์ข้อสอบเก่า (จับเวลาเหมือนสอบจริง)" },
+                        { time: "18:30 - 19:30", description: "ทานอาหารเย็น, พักผ่อน" },
+                        { time: "19:30 - 21:00", description: "ทบทวนบทเรียนที่ยังไม่เข้าใจ" },
+                        { time: "21:00 - 22:00", description: "ทำสรุปย่อ, อ่านข่าวสาร" },
+                        { time: "22:00 - 22:30", description: "พักผ่อน, เตรียมตัวเข้านอน" },
+                    ]},
+                    { day: "เสาร์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทำข้อสอบ A-Level (จับเวลา)" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:30", description: "เฉลยและทำความเข้าใจข้อสอบ" },
+                        { time: "15:30 - 17:00", description: "พักผ่อน, ออกกำลังกาย" },
+                        { time: "17:00 - 19:00", description: "สรุปเนื้อหาที่ต้องเน้น" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "ดูหนัง/ฟังเพลง, กิจกรรมที่ชอบ" },
+                    ]},
+                    { day: "อาทิตย์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาที่อ่อน" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:00", description: "เตรียมตัวสำหรับสัปดาห์ใหม่" },
+                        { time: "15:00 - 17:00", description: "กิจกรรมส่วนตัว, ผ่อนคลาย" },
+                        { time: "17:00 - 19:00", description: "ทบทวนเนื้อหาภาพรวม" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "เข้านอน" },
+                    ]}
+                ],
+                health: [
+                    { day: "จันทร์ - ศุกร์", activities: [
+                        { time: "07:00 - 08:00", description: "ตื่นนอน, อาหารเช้า, เตรียมตัวไปโรงเรียน" },
+                        { time: "08:00 - 16:00", description: "เรียนที่โรงเรียน" },
+                        { time: "16:00 - 16:30", description: "เดินทางกลับบ้าน, พักผ่อนสั้นๆ" },
+                        { time: "16:30 - 18:30", description: "ตะลุยโจทย์ **ชีววิทยาและเคมีเชิงลึก** เน้นบทที่ออกสอบบ่อย" },
+                        { time: "18:30 - 19:30", description: "ทานอาหารเย็น, พักผ่อน" },
+                        { time: "19:30 - 21:00", description: "ทบทวนวิชา**ฟิสิกส์** และ**คณิตศาสตร์** ที่เกี่ยวข้องกับวิชาเฉพาะทาง" },
+                        { time: "21:00 - 22:00", description: "ทำสรุปย่อ, อ่านข่าวสาร" },
+                        { time: "22:00 - 22:30", description: "พักผ่อน, เตรียมตัวเข้านอน" },
+                    ]},
+                    { day: "เสาร์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "**ทำข้อสอบ TPAT1 (ความถนัดแพทย์)** จับเวลาเหมือนสอบจริง" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:30", description: "เฉลยและทำความเข้าใจข้อสอบ" },
+                        { time: "15:30 - 17:00", description: "พักผ่อน, ออกกำลังกาย" },
+                        { time: "17:00 - 19:00", description: "สรุปเนื้อหาที่ต้องเน้น" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "ดูหนัง/ฟังเพลง, กิจกรรมที่ชอบ" },
+                    ]},
+                    { day: "อาทิตย์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาที่อ่อน" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:00", description: "เตรียมตัวสำหรับสัปดาห์ใหม่" },
+                        { time: "15:00 - 17:00", description: "กิจกรรมส่วนตัว, ผ่อนคลาย" },
+                        { time: "17:00 - 19:00", description: "ทบทวนเนื้อหาภาพรวม" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "เข้านอน" },
+                    ]}
+                ],
+                engineering: [
+                    { day: "จันทร์ - ศุกร์", activities: [
+                        { time: "07:00 - 08:00", description: "ตื่นนอน, อาหารเช้า, เตรียมตัวไปโรงเรียน" },
+                        { time: "08:00 - 16:00", description: "เรียนที่โรงเรียน" },
+                        { time: "16:00 - 16:30", description: "เดินทางกลับบ้าน, พักผ่อนสั้นๆ" },
+                        { time: "16:30 - 18:30", description: "ตะลุยโจทย์**ฟิสิกส์ (กลศาสตร์, ไฟฟ้า, คลื่น)** และ**คณิตศาสตร์ (แคลคูลัส, เวกเตอร์)**" },
+                        { time: "18:30 - 19:30", description: "ทานอาหารเย็น, พักผ่อน" },
+                        { time: "19:30 - 21:00", description: "ทบทวนวิชา**เคมี (เคมีอินทรีย์)** และ**ภาษาอังกฤษ** ที่ใช้ในงานวิศวกรรม" },
+                        { time: "21:00 - 22:00", description: "ทำสรุปย่อ, อ่านข่าวสาร" },
+                        { time: "22:00 - 22:30", description: "พักผ่อน, เตรียมตัวเข้านอน" },
+                    ]},
+                    { day: "เสาร์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "**ทำข้อสอบ TPAT3 (ความถนัดวิศวะฯ)** จับเวลาเหมือนสอบจริง" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:30", description: "เฉลยและทำความเข้าใจข้อสอบ" },
+                        { time: "15:30 - 17:00", description: "พักผ่อน, ออกกำลังกาย" },
+                        { time: "17:00 - 19:00", description: "สรุปเนื้อหาที่ต้องเน้น" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "ดูหนัง/ฟังเพลง, กิจกรรมที่ชอบ" },
+                    ]},
+                    { day: "อาทิตย์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาที่อ่อน" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:00", description: "เตรียมตัวสำหรับสัปดาห์ใหม่" },
+                        { time: "15:00 - 17:00", description: "กิจกรรมส่วนตัว, ผ่อนคลาย" },
+                        { time: "17:00 - 19:00", description: "ทบทวนเนื้อหาภาพรวม" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "เข้านอน" },
+                    ]}
+                ],
+                liberal_arts: [
+                    { day: "จันทร์ - ศุกร์", activities: [
+                        { time: "07:00 - 08:00", description: "ตื่นนอน, อาหารเช้า, เตรียมตัวไปโรงเรียน" },
+                        { time: "08:00 - 16:00", description: "เรียนที่โรงเรียน" },
+                        { time: "16:00 - 16:30", description: "เดินทางกลับบ้าน, พักผ่อนสั้นๆ" },
+                        { time: "16:30 - 18:30", description: "ตะลุยโจทย์**ภาษาอังกฤษ** และ**ภาษาไทย**" },
+                        { time: "18:30 - 19:30", description: "ทานอาหารเย็น, พักผ่อน" },
+                        { time: "19:30 - 21:00", description: "ทบทวนวิชา**สังคม**และฝึกทำข้อสอบ**ความถนัดทางภาษา**" },
+                        { time: "21:00 - 22:00", description: "ทำสรุปย่อ, อ่านข่าวสาร" },
+                        { time: "22:00 - 22:30", description: "พักผ่อน, เตรียมตัวเข้านอน" },
+                    ]},
+                    { day: "เสาร์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "**ทำข้อสอบ A-Level ภาษาอังกฤษ** และ**ภาษาไทย** จับเวลาเหมือนสอบจริง" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:30", description: "เฉลยและทำความเข้าใจข้อสอบ" },
+                        { time: "15:30 - 17:00", description: "พักผ่อน, ออกกำลังกาย" },
+                        { time: "17:00 - 19:00", description: "สรุปเนื้อหาที่ต้องเน้น" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "ดูหนัง/ฟังเพลง, กิจกรรมที่ชอบ" },
+                    ]},
+                    { day: "อาทิตย์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาที่อ่อน" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:00", description: "เตรียมตัวสำหรับสัปดาห์ใหม่" },
+                        { time: "15:00 - 17:00", description: "กิจกรรมส่วนตัว, ผ่อนคลาย" },
+                        { time: "17:00 - 19:00", description: "ทบทวนเนื้อหาภาพรวม" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "เข้านอน" },
+                    ]}
+                ],
+                business: [
+                    { day: "จันทร์ - ศุกร์", activities: [
+                        { time: "07:00 - 08:00", description: "ตื่นนอน, อาหารเช้า, เตรียมตัวไปโรงเรียน" },
+                        { time: "08:00 - 16:00", description: "เรียนที่โรงเรียน" },
+                        { time: "16:00 - 16:30", description: "เดินทางกลับบ้าน, พักผ่อนสั้นๆ" },
+                        { time: "16:30 - 18:30", description: "ตะลุยโจทย์**คณิตศาสตร์ (สถิติ, ลำดับ)** และ**ภาษาอังกฤษ (ศัพท์ธุรกิจ)**" },
+                        { time: "18:30 - 19:30", description: "ทานอาหารเย็น, พักผ่อน" },
+                        { time: "19:30 - 21:00", description: "ทบทวนวิชา**สังคม (เศรษฐศาสตร์)** และ**ภาษาไทย**" },
+                        { time: "21:00 - 22:00", description: "ทำสรุปย่อ, อ่านข่าวสาร" },
+                        { time: "22:00 - 22:30", description: "พักผ่อน, เตรียมตัวเข้านอน" },
+                    ]},
+                    { day: "เสาร์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "**ทำข้อสอบ A-Level คณิตศาสตร์** และ**ภาษาอังกฤษ** จับเวลาเหมือนสอบจริง" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:30", description: "เฉลยและทำความเข้าใจข้อสอบ" },
+                        { time: "15:30 - 17:00", description: "พักผ่อน, ออกกำลังกาย" },
+                        { time: "17:00 - 19:00", description: "สรุปเนื้อหาที่ต้องเน้น" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "ดูหนัง/ฟังเพลง, กิจกรรมที่ชอบ" },
+                    ]},
+                    { day: "อาทิตย์", activities: [
+                        { time: "09:00 - 10:00", description: "ตื่นนอน, อาหารเช้า" },
+                        { time: "10:00 - 12:00", description: "ทบทวนวิชาที่อ่อน" },
+                        { time: "12:00 - 13:30", description: "ทานอาหารกลางวัน, พักผ่อน" },
+                        { time: "13:30 - 15:00", description: "เตรียมตัวสำหรับสัปดาห์ใหม่" },
+                        { time: "15:00 - 17:00", description: "กิจกรรมส่วนตัว, ผ่อนคลาย" },
+                        { time: "17:00 - 19:00", description: "ทบทวนเนื้อหาภาพรวม" },
+                        { time: "19:00 - 20:30", description: "ทานอาหารเย็น" },
+                        { time: "20:30 - 22:00", description: "เข้านอน" },
+                    ]}
+                ]
+            }
+        };
+
+        function displaySchedule() {
+            const grade = document.getElementById('grade-level').value;
+            const major = document.getElementById('major-interest').value;
+            const outputDiv = document.getElementById('schedule-output');
+            let scheduleHTML = '';
+
+            if (!grade) {
+                outputDiv.innerHTML = `<p style="text-align:center; color:#c0392b;">❌ โปรดเลือกระดับชั้นก่อน</p>`;
+                return;
+            }
+
+            const selectedSchedule = schedules[grade][major];
+
+            if (selectedSchedule) {
+                const gradeTitle = grade === 'm4' ? 'ม.4' : grade === 'm5' ? 'ม.5' : 'ม.6';
+                let majorDescription = '';
+                if (major === 'health') {
+                    majorDescription = 'เน้นการเตรียมตัวสำหรับคณะสายวิทยาศาสตร์สุขภาพ';
+                } else if (major === 'engineering') {
+                    majorDescription = 'เน้นการเตรียมตัวสำหรับคณะวิศวกรรมศาสตร์';
+                } else if (major === 'liberal_arts') {
+                    majorDescription = 'เน้นการเตรียมตัวสำหรับคณะสายสังคมและภาษา';
+                } else if (major === 'business') {
+                    majorDescription = 'เน้นการเตรียมตัวสำหรับคณะสายบริหารและเศรษฐศาสตร์';
+                } else {
+                    majorDescription = 'เน้นการสร้างพื้นฐานให้แน่นในวิชาหลัก';
+                }
+
+                scheduleHTML += `
+                    <h2>แผนการเรียนสำหรับ ${gradeTitle}</h2>
+                    <p class="description">${majorDescription}</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>วัน</th>
+                                <th>ช่วงเวลา</th>
+                                <th>กิจกรรม/สิ่งที่ควรทำ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                selectedSchedule.forEach(daySchedule => {
+                    daySchedule.activities.forEach((activity, index) => {
+                        scheduleHTML += `
+                            <tr>
+                                ${index === 0 ? `<td rowspan="${daySchedule.activities.length}">${daySchedule.day}</td>` : ''}
+                                <td>${activity.time}</td>
+                                <td>${activity.description}</td>
+                            </tr>
+                        `;
+                    });
+                });
+
+                scheduleHTML += `
+                        </tbody>
+                    </table>
+                    <p class="note">คำแนะนำ: แผนการเรียนนี้เป็นเพียงแนวทางเบื้องต้น คุณสามารถปรับเปลี่ยนให้เหมาะสมกับตารางเวลาของคุณได้</p>
+                `;
+                
+                if (grade === 'm6') {
+                    scheduleHTML += `
+                        <div class="tcas-section">
+                            <h3>🔎 วางแผนต่อกับระบบ TCAS</h3>
+                            <p>เมื่อวางแผนการเรียนแล้ว อย่าลืมเตรียมตัวสำหรับระบบ TCAS ด้วย!</p>
+                            <ul>
+                                <li>ศึกษาขั้นตอน TCAS 1-4 ให้ละเอียด</li>
+                                <li>ดูคุณสมบัติและเกณฑ์คะแนนของคณะที่สนใจ</li>
+                                <li>ติดตามปฏิทิน TCAS จากเว็บไซต์ทางการ</li>
+                            </ul>
+                            <a href="https://www.mytcas.com" target="_blank">ดูรายละเอียดระบบ TCAS</a>
+                        </div>
+                    `;
+                }
+
+            } else {
+                scheduleHTML = `<p style="text-align:center; color:#c0392b;">❌ ไม่พบแผนการเรียนสำหรับตัวเลือกนี้</p>`;
+            }
+
+            outputDiv.innerHTML = scheduleHTML;
+        }
+    </script>
 
 </body>
 </html>
